@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "533846376966",
+    "firebase_url": "https://a-d-i-12d84-default-rtdb.firebaseio.com",
+    "project_id": "a-d-i-12d84",
+    "storage_bucket": "a-d-i-12d84.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533846376966:android:4888b2c819444682e73987",
+        "android_client_info": {
+          "package_name": "cl.vmi.adi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTyvLNtrWqpygMmrLa2pgtGTktf5a7AWk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
