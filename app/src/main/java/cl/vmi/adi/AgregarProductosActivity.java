@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -102,6 +103,9 @@ public class AgregarProductosActivity extends AppCompatActivity {
         int stock = Integer.parseInt(stockStr);
         double unitPrice = Double.parseDouble(unitPriceStr);
 
+        // Obtener UID del usuario autenticado
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         // Crear un mapa para los datos del producto
         Map<String, Object> product = new HashMap<>();
         product.put("nombre", productName);
@@ -110,12 +114,14 @@ public class AgregarProductosActivity extends AppCompatActivity {
         product.put("stock", stock);
         product.put("valorUnitario", unitPrice);
 
-        // Guardar el producto en Firestore
-        db.collection("productos").add(product)
+        // Guardar el producto bajo el UID del usuario
+        db.collection("usuarios").document(userId).collection("productos")
+                .add(product)
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(this, "Producto guardado con éxito", Toast.LENGTH_SHORT).show();
                     finish(); // Cerrar la actividad
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Error al guardar el producto", Toast.LENGTH_SHORT).show());
     }
+
 }

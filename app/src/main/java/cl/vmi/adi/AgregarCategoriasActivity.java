@@ -6,12 +6,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class AgregarCategoriasActivity extends AppCompatActivity {
 
     private EditText editTextCategoryName;
     private Button buttonSaveCategory;
     private FirebaseFirestore db;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +34,16 @@ public class AgregarCategoriasActivity extends AppCompatActivity {
             return;
         }
 
-        db.collection("categorias").add(new Category(name))
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Obtener UID del usuario autenticado
+
+        // Guardar la categoría bajo el UID del usuario
+        db.collection("usuarios").document(userId).collection("categorias")
+                .add(new Category(name))
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(this, "Categoría guardada", Toast.LENGTH_SHORT).show();
                     finish();
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show());
     }
+
 }

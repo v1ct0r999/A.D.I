@@ -12,6 +12,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import android.widget.ArrayAdapter;
 import java.util.List;
+import com.google.firebase.auth.FirebaseAuth;
+
+
 
 public class ListaProductosActivity extends AppCompatActivity {
 
@@ -32,7 +35,9 @@ public class ListaProductosActivity extends AppCompatActivity {
     }
 
     private void loadProductos() {
-        db.collection("productos")
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Obtener UID del usuario autenticado
+
+        db.collection("usuarios").document(userId).collection("productos") // Consultar la subcolección de productos bajo el UID del usuario
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     productoList.clear();
@@ -44,5 +49,4 @@ public class ListaProductosActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Error al cargar productos", Toast.LENGTH_SHORT).show());
     }
-
 }

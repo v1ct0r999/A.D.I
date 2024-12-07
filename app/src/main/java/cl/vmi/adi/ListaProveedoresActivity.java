@@ -12,6 +12,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import android.widget.ArrayAdapter;
 import java.util.List;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class ListaProveedoresActivity extends AppCompatActivity {
 
@@ -38,7 +39,9 @@ public class ListaProveedoresActivity extends AppCompatActivity {
     }
 
     private void loadProveedores() {
-        db.collection("proveedores")
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Obtener UID del usuario autenticado
+
+        db.collection("usuarios").document(userId).collection("proveedores") // Consultar la subcolección de proveedores bajo el UID del usuario
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     proveedorList.clear();
@@ -48,7 +51,6 @@ public class ListaProveedoresActivity extends AppCompatActivity {
                     // Usa un adaptador para mostrar la lista
                     listViewProveedores.setAdapter(new ArrayAdapter<>(this, R.layout.list_item_black_text, proveedorList));
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "Error cargando categorías", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> Toast.makeText(this, "Error cargando proveedores", Toast.LENGTH_SHORT).show());
     }
-
 }

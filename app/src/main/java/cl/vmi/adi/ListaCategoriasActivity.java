@@ -12,6 +12,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import android.widget.ArrayAdapter;
 import java.util.List;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class ListaCategoriasActivity extends AppCompatActivity {
 
@@ -38,7 +39,9 @@ public class ListaCategoriasActivity extends AppCompatActivity {
     }
 
     private void loadCategories() {
-        db.collection("categorias")
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Obtener el UID del usuario autenticado
+
+        db.collection("usuarios").document(userId).collection("categorias") // Consultar la subcolección bajo el UID del usuario
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     categoryList.clear();
@@ -50,5 +53,4 @@ public class ListaCategoriasActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Error cargando categorías", Toast.LENGTH_SHORT).show());
     }
-
 }
