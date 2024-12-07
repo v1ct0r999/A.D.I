@@ -24,7 +24,7 @@ public class ListaProductosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_productos);
 
-        listViewProductos = findViewById(R.id.listViewProductos);
+        //listViewProductos = findViewById(R.id.listViewProductos);
         db = FirebaseFirestore.getInstance();
         productoList = new ArrayList<>();
 

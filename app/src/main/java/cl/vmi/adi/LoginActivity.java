@@ -48,7 +48,22 @@ public class LoginActivity extends AppCompatActivity {
                         FirebaseUser user = auth.getCurrentUser();
                         updateUI(user);
                     } else {
-                        Toast.makeText(LoginActivity.this, "Error al iniciar sesión: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        // Aquí se maneja el error con un mensaje en español
+                        String errorMessage = "Error al iniciar sesión";
+                        if (task.getException() != null) {
+                            String exceptionMessage = task.getException().getMessage();
+
+                            if (exceptionMessage.contains("The email address is badly formatted")) {
+                                errorMessage = "El correo electrónico no tiene un formato válido.";
+                            } else if (exceptionMessage.contains("There is no user record corresponding to this identifier")) {
+                                errorMessage = "No se encuentra un usuario con ese correo electrónico.";
+                            } else if (exceptionMessage.contains("The password is invalid")) {
+                                errorMessage = "La contraseña es incorrecta.";
+                            } else if (exceptionMessage.contains("User disabled")) {
+                                errorMessage = "El usuario está deshabilitado.";
+                            }
+                        }
+                        Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

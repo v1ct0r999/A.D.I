@@ -45,6 +45,12 @@ public class RegistroActivity extends AppCompatActivity {
             return;
         }
 
+        // Validación de la contraseña
+        if (!isValidPassword(password)) {
+            Toast.makeText(this, "La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, números y caracteres especiales.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
@@ -52,14 +58,51 @@ public class RegistroActivity extends AppCompatActivity {
                         FirebaseUser user = auth.getCurrentUser();
                         updateUI(user);
                     } else {
-                        if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                            Toast.makeText(RegistroActivity.this, "Ya existe una cuenta con este correo", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(RegistroActivity.this, "Error en el registro: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        // Manejar errores de Firebase y traducir al español
+                        if (task.getException() != null) {
+                            String exceptionMessage = task.getException().getMessage();
+
+                            if (exceptionMessage.contains("The email address is badly formatted")) {
+                                Toast.makeText(RegistroActivity.this, "El correo electrónico no tiene un formato válido.", Toast.LENGTH_SHORT).show();
+                            } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                Toast.makeText(RegistroActivity.this, "Ya existe una cuenta con este correo", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(RegistroActivity.this, "Error en el registro: " + exceptionMessage, Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });
     }
+
+
+    // Método para validar la contraseña
+    private boolean isValidPassword(String password) {
+        // Asegurarse de que la contraseña tiene al menos 8 caracteres
+        if (password.length() < 8) {
+            return false;
+        }
+        // Verificar si la contraseña contiene al menos una letra mayúscula, una minúscula, un número y un carácter especial
+        boolean hasUpperCase = false;
+        boolean hasLowerCase = false;
+        boolean hasDigit = false;
+        boolean hasSpecialChar = false;
+
+        for (int i = 0; i < password.length(); i++) {
+            char ch = password.charAt(i);
+            if (Character.isUpperCase(ch)) {
+                hasUpperCase = true;
+            } else if (Character.isLowerCase(ch)) {
+                hasLowerCase = true;
+            } else if (Character.isDigit(ch)) {
+                hasDigit = true;
+            } else if (!Character.isLetterOrDigit(ch)) {
+                hasSpecialChar = true;
+            }
+        }
+
+        return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar;
+    }
+
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
