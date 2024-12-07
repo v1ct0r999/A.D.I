@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class AgregarProveedoresActivity extends AppCompatActivity {
 
@@ -32,11 +33,16 @@ public class AgregarProveedoresActivity extends AppCompatActivity {
             return;
         }
 
-        db.collection("proveedores").add(new Proveedor(name))
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Obtener UID del usuario autenticado
+
+        // Guardar el proveedor bajo el UID del usuario
+        db.collection("usuarios").document(userId).collection("proveedores")
+                .add(new Proveedor(name))
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(this, "Proveedor guardado", Toast.LENGTH_SHORT).show();
                     finish();
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show());
     }
+
 }
