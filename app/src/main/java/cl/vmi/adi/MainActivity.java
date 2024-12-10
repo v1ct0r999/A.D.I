@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(MainActivity.this, ListaProveedoresActivity.class));
+                startActivity(new Intent(MainActivity.this, AgregarProveedoresActivity.class));
 
             }
         });
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(MainActivity.this, ListaCategoriasActivity.class));
+                startActivity(new Intent(MainActivity.this, AgregarCategoriasActivity.class));
 
             }
         });
@@ -77,21 +77,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // BOTON REPORTE
+        // BOTON INVENTARIO
         buttonInventario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //startActivity(new Intent(MainActivity.this, InventarioActivity.class));
+                startActivity(new Intent(MainActivity.this, InventarioActivity.class));
 
             }
         });
-
-        // Obtener usuario actual
-        //FirebaseUser user = auth.getCurrentUser();
-        //if (user != null) {
-        //    welcomeMessage.setText("Bienvenido, " + user.getEmail());
-        //}
     }
 
     @Override

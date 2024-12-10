@@ -15,6 +15,24 @@
         android:theme="@style/Theme.ADI"
         tools:targetApi="31">
         <activity
+            android:name=".ProductosPorCategoriaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProductosPorProveedorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TodosProductosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BusquedaCategoriaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BusquedaProveedorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InventarioActivity"
+            android:exported="false" />
+        <activity
             android:name=".ListaProductosActivity"
             android:exported="false" />
         <activity

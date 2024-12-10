@@ -91,12 +91,12 @@
 
             <Button
                 android:id="@+id/buttonInventario"
+                style="@style/ButtonSquare"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:text="Inventario"
-                android:textSize="20sp"
                 android:textColor="@color/white"
-                style="@style/ButtonSquare" />
+                android:textSize="20sp" />
         </LinearLayout>
 
     </LinearLayout>

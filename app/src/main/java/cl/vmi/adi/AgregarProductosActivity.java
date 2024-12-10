@@ -51,42 +51,55 @@ public class AgregarProductosActivity extends AppCompatActivity {
     }
 
     private void loadCategories() {
-        db.collection("categorias").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                categoryList.clear();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    String categoryName = document.getString("nombre");
-                    if (categoryName != null) {
-                        categoryList.add(categoryName);
+        // Obtener UID del usuario autenticado
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Cargar categorías de la colección del usuario autenticado
+        db.collection("usuarios").document(userId).collection("categorias")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        categoryList.clear();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String categoryName = document.getString("nombre");
+                            if (categoryName != null) {
+                                categoryList.add(categoryName);
+                            }
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item_black_text, categoryList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinnerCategory.setAdapter(adapter);
+                    } else {
+                        Toast.makeText(this, "Error al cargar categorías", Toast.LENGTH_SHORT).show();
                     }
-                }
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item_black_text, categoryList);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerCategory.setAdapter(adapter);
-            } else {
-                Toast.makeText(this, "Error al cargar categorías", Toast.LENGTH_SHORT).show();
-            }
-        });
+                });
     }
 
     private void loadProveedores() {
-        db.collection("proveedores").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                proveedorList.clear();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    String proveedorName = document.getString("nombre");
-                    if (proveedorName != null) {
-                        proveedorList.add(proveedorName);
+        // Obtener UID del usuario autenticado
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Cargar proveedores de la colección del usuario autenticado
+        db.collection("usuarios").document(userId).collection("proveedores")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        proveedorList.clear();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String proveedorName = document.getString("nombre");
+                            if (proveedorName != null) {
+                                proveedorList.add(proveedorName);
+                            }
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item_black_text, proveedorList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinnerProveedor.setAdapter(adapter);
+                    } else {
+                        Toast.makeText(this, "Error al cargar proveedores", Toast.LENGTH_SHORT).show();
                     }
-                }
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item_black_text, proveedorList);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerProveedor.setAdapter(adapter);
-            } else {
-                Toast.makeText(this, "Error al cargar proveedores", Toast.LENGTH_SHORT).show();
-            }
-        });
+                });
     }
+
 
     private void saveProduct() {
         String productName = editTextProductName.getText().toString().trim();
