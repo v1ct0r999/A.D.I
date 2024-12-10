@@ -6,4 +6,16 @@
     </style>
 
     <style name="Theme.ADI" parent="Base.Theme.ADI" />
+
+    <style name="CustomToolbarStyle">
+        <item name="android:background">@color/azul</item> <!-- Color de fondo -->
+        <item name="android:titleTextColor">@android:color/white</item> <!-- Color del texto del título -->
+        <item name="android:elevation">4dp</item> <!-- Sombra del Toolbar -->
+    </style>
+
+
+    <!-- Estilo para los botones sin bordes redondeados -->
+    <style name="ButtonSquare">
+        <item name="android:background">@drawable/button_square</item>
+    </style>
 </resources>

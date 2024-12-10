@@ -4,134 +4,100 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
     android:background="@drawable/fondo_inventario">
 
-    <LinearLayout
+    <!-- Barra de herramientas (Toolbar) -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:id="@+id/welcome_message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bienvenido, Usuario"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"
-                    android:layout_centerInParent="true"
-                    android:textStyle="bold"/>
-            </RelativeLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="¿Que deseas realizar?"
-                    android:textSize="20dp"
-                    android:textColor="@color/black"
-                    android:layout_centerInParent="true"/>
-            </RelativeLayout>
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:title="Mi App" />
 
-    </LinearLayout>
+    <!-- Contenedor de los botones -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
-        <RelativeLayout
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Fila de 2 botones (Izquierda y Derecha) -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <Button
-                android:id="@+id/buttonCategoria"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:text="Ir a Categorias"
-                android:textSize="20dp"
-                android:backgroundTint="@color/azul"
-                android:textColor="@color/white"/>
-        </RelativeLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <Button
-                android:id="@+id/buttonProveedor"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:text="Ir a Proveedores"
-                android:textSize="20dp"
-                android:backgroundTint="@color/azul"
-                android:textColor="@color/white"/>
-        </RelativeLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginBottom="16dp">
+
             <Button
                 android:id="@+id/buttonProducto"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:text="Agregar Productos"
-                android:textSize="20dp"
-                android:backgroundTint="@color/azul"
-                android:textColor="@color/white"/>
-        </RelativeLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </RelativeLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <Button
-                android:id="@+id/buttonLogout"
-                android:layout_width="200dp"
-                android:layout_height="60dp"
-                android:text="Cerrar Sesión"
-                android:textSize="20dp"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/naranjo"
+                android:layout_width="0dp"
+                android:layout_height="175dp"
+                android:layout_weight="1"
+                android:text="Agregar Producto"
+                android:textSize="20sp"
                 android:textColor="@color/white"
-                android:layout_centerInParent="true"/>
-        </RelativeLayout>
+                style="@style/ButtonSquare"
+                android:layout_marginEnd="8dp" /> <!-- Espacio entre los botones -->
+
+            <Button
+                android:id="@+id/buttonProveedor"
+                android:layout_width="0dp"
+                android:layout_height="175dp"
+                android:layout_weight="1"
+                android:text="Agregar Proveedor"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                style="@style/ButtonSquare" />
+        </LinearLayout>
+
+        <!-- Fila de 2 botones (abajo) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/buttonCategoria"
+                android:layout_width="0dp"
+                android:layout_height="175dp"
+                android:layout_weight="1"
+                android:text="Agregar Categoria"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                style="@style/ButtonSquare"
+                android:layout_marginEnd="8dp" /> <!-- Espacio entre los botones -->
+
+            <Button
+                android:id="@+id/buttonReporte"
+                android:layout_width="0dp"
+                android:layout_height="175dp"
+                android:layout_weight="1"
+                android:text="Reporte Semanal"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                style="@style/ButtonSquare" />
+        </LinearLayout>
+
+        <!-- Fila de un botón (abajo) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/buttonInventario"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:text="Inventario"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                style="@style/ButtonSquare" />
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>
