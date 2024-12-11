@@ -15,6 +15,9 @@
         android:theme="@style/Theme.ADI"
         tools:targetApi="31">
         <activity
+            android:name=".DetalleProductoActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProductosPorCategoriaActivity"
             android:exported="false" />
         <activity
@@ -33,22 +36,13 @@
             android:name=".InventarioActivity"
             android:exported="false" />
         <activity
-            android:name=".ListaProductosActivity"
-            android:exported="false" />
-        <activity
             android:name=".AgregarProductosActivity"
             android:exported="false" />
         <activity
             android:name=".AgregarProveedoresActivity"
             android:exported="false" />
         <activity
-            android:name=".ListaProveedoresActivity"
-            android:exported="false" />
-        <activity
             android:name=".AgregarCategoriasActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ListaCategoriasActivity"
             android:exported="false" />
         <activity
             android:name=".RegistroActivity"

@@ -1,15 +1,11 @@
 package cl.vmi.adi;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.ArrayAdapter;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -26,8 +22,8 @@ public class TodosProductosActivity extends AppCompatActivity {
     private EditText editTextSearch;
     private ListView listViewProductos;
     private FirebaseFirestore db;
-    private List<String> productList;
-    private ArrayAdapter<String> adapter;
+    private List<Producto> productList;  // Lista de productos
+    private ProductoAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,17 +37,18 @@ public class TodosProductosActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        // Inicializar vistas
         editTextSearch = findViewById(R.id.editTextSearch);
         listViewProductos = findViewById(R.id.listViewProductos);
         db = FirebaseFirestore.getInstance();
         productList = new ArrayList<>();
 
-        // **Asegúrate de crear el adaptador aquí antes de cargar los productos**
-        ProductoAdapter adapter = new ProductoAdapter(this, productList);
+        // Crear el adaptador con la lista de productos
+        adapter = new ProductoAdapter(this, productList);
         listViewProductos.setAdapter(adapter);
 
-        // Cargar los productos
-        loadProductos(adapter);  // Pasa el adaptador como parámetro para notificar los cambios
+        // Cargar los productos desde Firestore
+        loadProductos();  // No es necesario pasar el adaptador, ya que lo tenemos como miembro
 
         // Configurar filtro de búsqueda
         editTextSearch.addTextChangedListener(new TextWatcher() {
@@ -68,7 +65,8 @@ public class TodosProductosActivity extends AppCompatActivity {
         });
     }
 
-    private void loadProductos(ProductoAdapter adapter) {
+    // Método para cargar los productos desde Firestore
+    private void loadProductos() {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // UID del usuario autenticado
 
         db.collection("usuarios").document(userId).collection("productos")
@@ -76,10 +74,23 @@ public class TodosProductosActivity extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     productList.clear(); // Limpiar la lista antes de agregar nuevos datos
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        String productName = doc.getString("nombre");
-                        if (productName != null) {
-                            productList.add(productName);
-                        }
+                        String nombre = doc.getString("nombre");
+                        String categoria = doc.getString("categoria");
+                        String proveedor = doc.getString("proveedor");
+
+                        // Manejar stock (puede ser un número, así que lo convertimos a String)
+                        Object stockObj = doc.get("stock");
+                        String stock = (stockObj != null) ? stockObj.toString() : "0";  // Convertir a String
+
+                        // Manejar valorUnitario (antes precioUnitario, lo convertimos a String)
+                        Object valorUnitarioObj = doc.get("valorunitario");  // Cambié el nombre a "valorunitario"
+                        String valorUnitario = (valorUnitarioObj != null) ? valorUnitarioObj.toString() : "0";
+
+                        // Crear un nuevo objeto Producto con los datos obtenidos
+                        Producto producto = new Producto(nombre, categoria, proveedor, stock, valorUnitario);  // Actualizamos aquí también
+
+                        // Agregar el producto a la lista
+                        productList.add(producto);
                     }
                     // Notificar al adaptador después de que los datos se hayan cargado
                     adapter.notifyDataSetChanged(); // Notificar al adaptador sobre los cambios
