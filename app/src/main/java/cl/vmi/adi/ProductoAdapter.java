@@ -52,6 +52,7 @@ public class ProductoAdapter extends ArrayAdapter<Producto> {
                 intent.putExtra("proveedor", producto.getProveedor());
                 intent.putExtra("stock", producto.getStock());
                 intent.putExtra("valorUnitario", producto.getValorUnitario());
+                intent.putExtra("productoId", producto.getId());  // Pasar el ID de Firebase
 
                 // Iniciar la actividad de detalle
                 context.startActivity(intent);

@@ -2,22 +2,32 @@ package cl.vmi.adi;
 
 public class Producto {
 
+    private String id;  // Agregar el campo id
     private String nombre;
     private String categoria;
     private String proveedor;
-    private String stock;  // Se mantiene como String
-    private String valorUnitario;  // Cambié el nombre de precioUnitario a valorUnitario
+    private String stock;
+    private String valorUnitario;
 
     // Constructor vacío requerido por Firebase
     public Producto() {}
 
-    // Constructor con parámetros (todos los datos como String)
+    // Constructor con parámetros
     public Producto(String nombre, String categoria, String proveedor, String stock, String valorUnitario) {
         this.nombre = nombre;
         this.categoria = categoria;
         this.proveedor = proveedor;
         this.stock = stock;
-        this.valorUnitario = valorUnitario;  // Usamos valorUnitario en lugar de precioUnitario
+        this.valorUnitario = valorUnitario;
+    }
+
+    // Getter y Setter para 'id'
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     // Getter y Setter para 'nombre'

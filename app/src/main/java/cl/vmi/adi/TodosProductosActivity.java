@@ -1,5 +1,6 @@
 package cl.vmi.adi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -48,7 +49,7 @@ public class TodosProductosActivity extends AppCompatActivity {
         listViewProductos.setAdapter(adapter);
 
         // Cargar los productos desde Firestore
-        loadProductos();  // No es necesario pasar el adaptador, ya que lo tenemos como miembro
+        loadProductos();
 
         // Configurar filtro de búsqueda
         editTextSearch.addTextChangedListener(new TextWatcher() {
@@ -74,6 +75,7 @@ public class TodosProductosActivity extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     productList.clear(); // Limpiar la lista antes de agregar nuevos datos
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        String productoId = doc.getId();  // Obtener el ID generado por Firebase
                         String nombre = doc.getString("nombre");
                         String categoria = doc.getString("categoria");
                         String proveedor = doc.getString("proveedor");
@@ -83,11 +85,12 @@ public class TodosProductosActivity extends AppCompatActivity {
                         String stock = (stockObj != null) ? stockObj.toString() : "0";  // Convertir a String
 
                         // Manejar valorUnitario (antes precioUnitario, lo convertimos a String)
-                        Object valorUnitarioObj = doc.get("valorunitario");  // Cambié el nombre a "valorunitario"
+                        Object valorUnitarioObj = doc.get("valorUnitario");  // Cambié el nombre a "valorunitario"
                         String valorUnitario = (valorUnitarioObj != null) ? valorUnitarioObj.toString() : "0";
 
                         // Crear un nuevo objeto Producto con los datos obtenidos
-                        Producto producto = new Producto(nombre, categoria, proveedor, stock, valorUnitario);  // Actualizamos aquí también
+                        Producto producto = new Producto(nombre, categoria, proveedor, stock, valorUnitario);
+                        producto.setId(productoId);  // Asignar el ID del producto
 
                         // Agregar el producto a la lista
                         productList.add(producto);

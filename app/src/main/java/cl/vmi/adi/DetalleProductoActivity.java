@@ -7,6 +7,9 @@ import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class DetalleProductoActivity extends AppCompatActivity {
 
     private TextView textViewNombre;
@@ -38,6 +41,7 @@ public class DetalleProductoActivity extends AppCompatActivity {
         String proveedor = intent.getStringExtra("proveedor");
         String stock = intent.getStringExtra("stock");
         String valorUnitario = intent.getStringExtra("valorUnitario");  // Cambié de precioUnitario a valorUnitario
+        String productoId = intent.getStringExtra("productoId");  // Recibimos el ID del producto
 
         // Si alguno de los valores es nulo, asignar un valor por defecto o mostrar un mensaje
         if (nombre == null) nombre = "No disponible";
@@ -53,9 +57,34 @@ public class DetalleProductoActivity extends AppCompatActivity {
         textViewStock.setText(stock);
         textViewValorUnitario.setText(valorUnitario);  // Cambié de precioUnitario a valorUnitario
 
-        // Acción para el botón "Eliminar" (puedes agregar la lógica que necesites aquí)
+        // Acción para el botón "Eliminar"
         buttonEliminar.setOnClickListener(v -> {
-            // Lógica para eliminar el producto
+            if (productoId != null && !productoId.isEmpty()) {
+                // Lógica para eliminar el producto
+                eliminarProducto(productoId);
+            } else {
+                Toast.makeText(DetalleProductoActivity.this, "ID de producto no disponible", Toast.LENGTH_SHORT).show();
+            }
         });
+    }
+
+    // Método para eliminar el producto
+    private void eliminarProducto(String productoId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // UID del usuario autenticado
+
+        // Intentamos eliminar el producto de Firestore usando el productoId
+        db.collection("usuarios").document(userId).collection("productos")
+                .document(productoId)  // Usar el productoId que es el ID de Firestore
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    // Producto eliminado correctamente
+                    Toast.makeText(DetalleProductoActivity.this, "Producto eliminado", Toast.LENGTH_SHORT).show();
+                    finish();  // Volver a la actividad anterior (si es necesario)
+                })
+                .addOnFailureListener(e -> {
+                    // Si ocurre un error al eliminar el producto
+                    Toast.makeText(DetalleProductoActivity.this, "Error al eliminar el producto", Toast.LENGTH_SHORT).show();
+                });
     }
 }
