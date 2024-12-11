@@ -46,12 +46,12 @@ public class TodosProductosActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         productList = new ArrayList<>();
 
-        // Configurar adaptador para el ListView
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, productList);
+        // **Asegúrate de crear el adaptador aquí antes de cargar los productos**
+        ProductoAdapter adapter = new ProductoAdapter(this, productList);
         listViewProductos.setAdapter(adapter);
 
         // Cargar los productos
-        loadProductos();
+        loadProductos(adapter);  // Pasa el adaptador como parámetro para notificar los cambios
 
         // Configurar filtro de búsqueda
         editTextSearch.addTextChangedListener(new TextWatcher() {
@@ -68,7 +68,7 @@ public class TodosProductosActivity extends AppCompatActivity {
         });
     }
 
-    private void loadProductos() {
+    private void loadProductos(ProductoAdapter adapter) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // UID del usuario autenticado
 
         db.collection("usuarios").document(userId).collection("productos")
@@ -81,19 +81,9 @@ public class TodosProductosActivity extends AppCompatActivity {
                             productList.add(productName);
                         }
                     }
+                    // Notificar al adaptador después de que los datos se hayan cargado
                     adapter.notifyDataSetChanged(); // Notificar al adaptador sobre los cambios
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Error al cargar productos", Toast.LENGTH_SHORT).show());
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            // Volver a la pantalla principal (MainActivity)
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
